@@ -1,4 +1,5 @@
 import { Text, View } from "react-native";
+import { Calendar } from "./components/calendar";
 
 export default function Index() {
 
@@ -13,6 +14,7 @@ export default function Index() {
       }}
     >
       <Text>Today is {today.toDateString()}</Text>
+      <Calendar />
     </View>
   );
 }
