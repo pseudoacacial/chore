@@ -1,10 +1,10 @@
 import { Text, View } from "react-native";
 import { Calendar } from "./components/calendar";
+import "../global.css";
 
 export default function Index() {
-
-  const foo = "asdf"
-  const today = new Date()
+  const foo = "asdf";
+  const today = new Date();
   return (
     <View
       style={{
@@ -13,7 +13,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Today is {today.toDateString()}</Text>
+      <Text className="text-xl font-bold text-blue-500">
+        Today is {today.toDateString()}
+      </Text>
       <Calendar />
     </View>
   );
