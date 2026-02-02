@@ -16,7 +16,7 @@ export default function Index() {
       <Text className="text-xl font-bold text-blue-500">
         Today is {today.toDateString()}
       </Text>
-      <Calendar />
+      <Calendar date={today} />
     </View>
   );
 }
