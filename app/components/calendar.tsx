@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import CalendarCell from "./ui/calendarCell";
 import CalendarRow from "./ui/calendarRow";
-import { View, VirtualizedList } from "react-native";
+import {
+  View,
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from "react-native";
 
 type CalendarProps = {
   date: Date;
@@ -13,19 +18,14 @@ const weekStartDay = 1;
 
 const getPreviousStartOfTheWeek = (date: Date, startOfTheWeek = 0) => {
   if (date.getDay() === startOfTheWeek) return date;
-  const prevDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate() - 1,
-  );
+  const prevDay = new Date(date);
+  prevDay.setDate(date.getDate() - 1);
   return getPreviousStartOfTheWeek(prevDay, startOfTheWeek);
 };
 
 const Calendar = ({ date }: CalendarProps) => {
-  const month = date.getMonth();
-  const year = date.getFullYear();
   const initialIndex = useRef(100);
-  const virtualizedListRef = useRef(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const [dates, setDates] = useState<Array<Date[]>>([]);
 
@@ -97,26 +97,34 @@ const Calendar = ({ date }: CalendarProps) => {
   useEffect(() => {
     setDates(generateInitialDates());
   }, []);
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollY = event.nativeEvent.contentOffset.y;
 
-  const getItem = (_data: unknown, index: number): Date[] => dates[index];
-
-  const getItemCount = (_data: unknown) => dates.length;
+    // Prevent scrolling to the very top - otherwise the view sticks to the top and keeps scrolling up
+    if (scrollY < 1) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToOffset({
+          offset: 1, // Just 1px down from top
+          animated: false,
+        });
+      }, 10);
+    }
+  };
   return (
     <View className="flex-1 h-full w-[240px]">
-      <VirtualizedList
+      <FlatList
         className="flex-1 web:h-screen"
-        ref={virtualizedListRef}
+        ref={flatListRef}
         initialNumToRender={200}
         data={dates}
         renderItem={({ item }) => (
           <CalendarRow key={item[0].toDateString()}>
-            {item.map((cellDate) => (
+            {item.map((cellDate: Date) => (
               <CalendarCell key={cellDate.toDateString()} date={cellDate} />
             ))}
           </CalendarRow>
         )}
-        getItem={getItem}
-        getItemCount={getItemCount}
+        keyExtractor={(date, _index) => date[0].toDateString()}
         initialScrollIndex={initialIndex.current}
         getItemLayout={(_data, index) => ({
           length: 24,
@@ -124,10 +132,15 @@ const Calendar = ({ date }: CalendarProps) => {
           index: index,
         })}
         onStartReached={loadMorePastDates}
-        onStartReachedThreshold={0.1}
+        onStartReachedThreshold={0.5}
         onEndReached={loadMoreFutureDates}
-        onEndReachedThreshold={0.1}
-      ></VirtualizedList>
+        onEndReachedThreshold={0.5}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+          autoscrollToTopThreshold: 50,
+        }}
+        onScroll={handleScroll}
+      ></FlatList>
     </View>
   );
 };
