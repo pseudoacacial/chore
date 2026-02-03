@@ -22,7 +22,7 @@ const getPreviousStartOfTheWeek = (date: Date, startOfTheWeek = 0) => {
 };
 
 const Calendar = ({ date }: CalendarProps) => {
-  const rows = 10;
+  const rows = 100;
   const renderedRows: Array<Date>[] = [];
 
   const month = date.getMonth();
@@ -45,8 +45,7 @@ const Calendar = ({ date }: CalendarProps) => {
   });
 
   return (
-    <div className="h-max">
-      <Text className="text-xl text-blue-500">calendar</Text>
+    <div className="h-[1000px] overflow-scroll">
       <div className="relative">
         {renderedRows.map((row, i) => (
           <CalendarRow key={row[0].toDateString()}>
