@@ -27,7 +27,7 @@ const Calendar = ({ date }: CalendarProps) => {
   const initialIndex = useRef(100);
   const virtualizedListRef = useRef(null);
 
-  const [data, setData] = useState<Array<Date[]>>([]);
+  const [dates, setDates] = useState<Array<Date[]>>([]);
 
   const startDate = getPreviousStartOfTheWeek(date, weekStartDay);
 
@@ -67,20 +67,47 @@ const Calendar = ({ date }: CalendarProps) => {
     return rows;
   };
 
+  const loadMorePastDates = () => {
+    const firstDate = dates[0][0];
+    const newDates: Array<Date[]> = [];
+
+    for (let i = 20; i > 0; i--) {
+      const cellDate = new Date(firstDate);
+      cellDate.setDate(cellDate.getDate() - i * 7);
+      newDates.push(generateWeek(cellDate));
+    }
+
+    setDates((prev) => [...newDates, ...prev]);
+  };
+
+  const loadMoreFutureDates = () => {
+    const lastRow = dates[dates.length - 1];
+    const lastDate = lastRow[lastRow.length - 1];
+    const newDates: Array<Date[]> = [];
+
+    for (let i = 1; i <= 20; i++) {
+      const cellDate = new Date(lastDate);
+      cellDate.setDate(cellDate.getDate() + i * 7);
+      newDates.push(generateWeek(cellDate));
+    }
+
+    setDates((prev) => [...prev, ...newDates]);
+  };
+
   useEffect(() => {
-    setData(generateInitialDates());
+    setDates(generateInitialDates());
   }, []);
 
-  const getItem = (_data: unknown, index: number): Date[] => data[index];
+  const getItem = (_data: unknown, index: number): Date[] => dates[index];
 
-  const getItemCount = (_data: unknown) => data.length;
+  const getItemCount = (_data: unknown) => dates.length;
   return (
     <View className="flex-1 h-full w-[240px]">
       <VirtualizedList
         className="flex-1 web:h-screen"
         ref={virtualizedListRef}
         initialNumToRender={200}
-        data={data}
+        data={dates}
         renderItem={({ item }) => (
           <CalendarRow key={item[0].toDateString()}>
             {item.map((cellDate) => (
@@ -96,6 +123,10 @@ const Calendar = ({ date }: CalendarProps) => {
           offset: 24 * index,
           index: index,
         })}
+        onStartReached={loadMorePastDates}
+        onStartReachedThreshold={0.1}
+        onEndReached={loadMoreFutureDates}
+        onEndReachedThreshold={0.1}
       ></VirtualizedList>
     </View>
   );
