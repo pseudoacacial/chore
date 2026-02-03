@@ -23,7 +23,7 @@ const getPreviousStartOfTheWeek = (date: Date, startOfTheWeek = 0) => {
 
 export const Calendar = ({ date }: CalendarProps) => {
   const rows = 10;
-  const renderedRows: Array<React.JSX.Element>[] = [];
+  const renderedRows: Array<Date>[] = [];
 
   const month = date.getMonth();
   const year = date.getFullYear();
@@ -40,9 +40,7 @@ export const Calendar = ({ date }: CalendarProps) => {
         startDate.getMonth(),
         startDate.getDate() + rowIndex * 7 + day,
       );
-      row.push(
-        <CalendarCell key={"" + rowIndex + "-" + day} date={cellDate} />,
-      );
+      row.push(cellDate);
     }
   });
 
@@ -51,7 +49,11 @@ export const Calendar = ({ date }: CalendarProps) => {
       <Text className="text-xl text-blue-500">calendar</Text>
       <div className="relative">
         {renderedRows.map((row, i) => (
-          <CalendarRow key={i}>{row.map((cell) => cell)}</CalendarRow>
+          <CalendarRow key={row[0].toDateString()}>
+            {row.map((cellDate) => (
+              <CalendarCell key={cellDate.toDateString()} date={cellDate} />
+            ))}
+          </CalendarRow>
         ))}
       </div>
     </div>

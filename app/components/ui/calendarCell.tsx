@@ -1,6 +1,6 @@
 import React from "react";
 
-type CalendarCellProps = {
+export type CalendarCellProps = {
   date: Date;
 };
 
