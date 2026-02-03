@@ -1,6 +1,6 @@
 import React from "react";
-import { CalendarCell } from "./ui/calendarCell";
-import { CalendarRow } from "./ui/calendarRow";
+import CalendarCell from "./ui/calendarCell";
+import CalendarRow from "./ui/calendarRow";
 import { Text } from "react-native";
 
 type CalendarProps = {
@@ -21,7 +21,7 @@ const getPreviousStartOfTheWeek = (date: Date, startOfTheWeek = 0) => {
   return getPreviousStartOfTheWeek(prevDay, startOfTheWeek);
 };
 
-export const Calendar = ({ date }: CalendarProps) => {
+const Calendar = ({ date }: CalendarProps) => {
   const rows = 10;
   const renderedRows: Array<Date>[] = [];
 
@@ -59,3 +59,5 @@ export const Calendar = ({ date }: CalendarProps) => {
     </div>
   );
 };
+
+export default Calendar;

@@ -4,7 +4,7 @@ export type CalendarCellProps = {
   date: Date;
 };
 
-export const CalendarCell = ({ date }: CalendarCellProps) => {
+const CalendarCell = ({ date }: CalendarCellProps) => {
   const today = new Date();
   const isToday = date.toDateString() === today.toDateString();
   const isEvenMonth = date.getMonth() % 2;
@@ -16,3 +16,5 @@ export const CalendarCell = ({ date }: CalendarCellProps) => {
     </div>
   );
 };
+
+export default CalendarCell;
