@@ -1,4 +1,5 @@
-import { create } from "zustand";
+import { create, StateCreator } from "zustand";
+import { devtools } from "zustand/middleware";
 
 import { Chore } from "../types/Chore";
 
@@ -8,7 +9,7 @@ interface choreStore {
   deleteChore: (id: string) => void;
 }
 
-export const useChoreStore = create<choreStore>((set) => ({
+export const useChoreStore = create<choreStore>()((set) => ({
   chores: new Map(),
   addChore: (chore: Chore) =>
     set((state) => ({

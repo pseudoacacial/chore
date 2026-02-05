@@ -1,4 +1,5 @@
 export type Chore = {
+  name: string;
   start: Date;
   done: Date[];
   type: "daily" | "weekly";

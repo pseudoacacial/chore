@@ -1,7 +1,8 @@
 import React from "react";
+import Chores from "../components/chores";
 
 const chores = () => {
-  return <div>chores</div>;
+  return <Chores />;
 };
 
 export default chores;
