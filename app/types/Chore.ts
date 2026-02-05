@@ -1,5 +1,8 @@
+import { ColorValue } from "react-native";
+
 export type Chore = {
   name: string;
+  color: ColorValue;
   start: Date;
   done: Date[];
   type: "daily" | "weekly";

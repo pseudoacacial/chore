@@ -10,7 +10,7 @@ const ChoreSelector = ({}: ChoreSelectorProps) => {
       <div className="w-6 h-1/2 overflow-scroll bg-[cornflowerblue]">
         <div className="relative flex flex-col bg-[tomato]">
           {[...chores].map(([id, chore]) => (
-            <li>chore.id</li>
+            <li style={{ background: String(chore.color) }}>chore.id</li>
           ))}
         </div>
       </div>
