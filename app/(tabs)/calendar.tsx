@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import Calendar from "../components/calendar";
 import "../../global.css";
+import ChoresSelector from "../components/choresSelector";
 
 export default function Index() {
   const foo = "asdf";
@@ -17,6 +18,7 @@ export default function Index() {
         Today is {today.toDateString()}
       </Text>
       <Calendar date={today} />
+      <ChoresSelector />
     </View>
   );
 }
