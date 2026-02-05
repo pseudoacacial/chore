@@ -10,6 +10,7 @@ import {
 
 type CalendarProps = {
   date: Date;
+  selectedChores: Boolean[];
 };
 
 // magic number from config
