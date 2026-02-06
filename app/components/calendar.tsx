@@ -10,7 +10,7 @@ import {
 
 type CalendarProps = {
   date: Date;
-  selectedChores: Boolean[];
+  selectedChores: Set<string>;
 };
 
 // magic number from config
@@ -24,7 +24,7 @@ const getPreviousStartOfTheWeek = (date: Date, startOfTheWeek = 0) => {
   return getPreviousStartOfTheWeek(prevDay, startOfTheWeek);
 };
 
-const Calendar = ({ date }: CalendarProps) => {
+const Calendar = ({ date, selectedChores }: CalendarProps) => {
   const initialIndex = useRef(100);
   const flatListRef = useRef<FlatList>(null);
 
@@ -121,7 +121,11 @@ const Calendar = ({ date }: CalendarProps) => {
         renderItem={({ item }) => (
           <CalendarRow key={item[0].toDateString()}>
             {item.map((cellDate: Date) => (
-              <CalendarCell key={cellDate.toDateString()} date={cellDate} />
+              <CalendarCell
+                key={cellDate.toDateString()}
+                date={cellDate}
+                selectedChores={selectedChores}
+              />
             ))}
           </CalendarRow>
         )}

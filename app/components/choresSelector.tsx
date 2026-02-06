@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useChoreStore } from "../hooks/use-chore-store";
 
 type ChoreSelectorProps = {
-  selectedChores: Boolean[];
-  setSelectedChores: React.Dispatch<React.SetStateAction<Boolean[]>>;
+  selectedChores: Set<string>;
+  setSelectedChores: React.Dispatch<React.SetStateAction<Set<string>>>;
 };
 
 const ChoreSelector = ({
@@ -18,17 +18,18 @@ const ChoreSelector = ({
         <div className="relative flex flex-col bg-[tomato]">
           {[...chores].map(([id, chore], index) => (
             <li
+              className="h-6 overflow-hidden"
               style={{
                 background: String(chore.color),
-                opacity: selectedChores[index] ? 1 : 0.6,
+                opacity: selectedChores.has(id) ? 1 : 0.6,
               }}
               onClick={() => {
                 setSelectedChores(
-                  selectedChores.map((e, i) => (i === index ? !e : e)),
+                  selectedChores.symmetricDifference(new Set([id])),
                 );
               }}
             >
-              chore.id
+              {id}
             </li>
           ))}
         </div>

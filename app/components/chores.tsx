@@ -12,7 +12,7 @@ const Chores = () => {
       name: "Alice",
       color: colorList[currentColor.current % colorList.length],
       start: new Date(),
-      done: [],
+      done: [new Date()],
       type: "daily",
     });
     currentColor.current++;

@@ -6,12 +6,11 @@ import { useChoreStore } from "../hooks/use-chore-store";
 import { useState } from "react";
 
 export default function Index() {
-  const foo = "asdf";
   const today = new Date();
 
   const chores = useChoreStore((state) => state.chores);
-  const [selectedChores, setSelectedChores] = useState<Boolean[]>(
-    [...chores].map((_value, index) => index === 0),
+  const [selectedChores, setSelectedChores] = useState<Set<string>>(
+    new Set(chores.keys()),
   );
   return (
     <View
