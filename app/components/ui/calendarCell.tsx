@@ -1,5 +1,6 @@
 import React from "react";
 import { useChoreStore } from "../../hooks/use-chore-store";
+import { View, Text } from "react-native";
 
 export type CalendarCellProps = {
   date: Date;
@@ -13,22 +14,22 @@ const CalendarCell = ({ date, selectedChores }: CalendarCellProps) => {
   const isEvenMonth = date.getMonth() % 2;
 
   return (
-    <div
+    <View
       className={`flex justify-center flex-grow w-8 h-6 box-border  border ${isToday ? "border-red-600 border-2" : "border-slate-700"} ${isEvenMonth ? "bg-slate-100" : "bg-slate-200"}`}
     >
-      {date.getDate()}
+      <Text>{date.getDate()}</Text>
       {[...selectedChores].map((choreId, i) => {
         const chore = chores.get(choreId);
 
         return chore?.done
           .map((date) => date.toDateString())
           .includes(date.toDateString()) ? (
-          <span style={{ backgroundColor: String(chore.color) }}>x</span>
-        ) : (
-          ""
-        );
+          <View style={{ backgroundColor: String(chore.color) }}>
+            <Text>x</Text>
+          </View>
+        ) : null;
       })}
-    </div>
+    </View>
   );
 };
 

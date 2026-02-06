@@ -1,11 +1,12 @@
 import React, { useRef } from "react";
 import { useChoreStore } from "../hooks/use-chore-store";
+import { Pressable, View, Text } from "react-native";
 
 const Chores = () => {
   const chores = useChoreStore((state) => state.chores);
   const addChore = useChoreStore((state) => state.addChore);
   const currentColor = useRef(0);
-  const colorList = ["tomato", "cornflowerBlue", "rebeccapurple"];
+  const colorList = ["tomato", "cornflowerblue", "rebeccapurple"];
 
   const handleAddChoreClick = () => {
     addChore({
@@ -19,24 +20,26 @@ const Chores = () => {
   };
   const deleteChore = useChoreStore((state) => state.deleteChore);
   return (
-    <>
-      <button onClick={handleAddChoreClick}>add chore</button>
+    <View>
+      <Pressable onPress={handleAddChoreClick}>
+        <Text>add chore</Text>
+      </Pressable>
 
-      <div>Chores</div>
+      <Text>Chores</Text>
 
       {[...chores].map(([id, chore]) => (
         <li key={id} style={{ background: String(chore.color) }}>
           {chore.name}
-          <button
-            onClick={() => {
+          <Pressable
+            onPress={() => {
               deleteChore(id);
             }}
           >
-            X
-          </button>
+            <Text>X</Text>
+          </Pressable>
         </li>
       ))}
-    </>
+    </View>
   );
 };
 

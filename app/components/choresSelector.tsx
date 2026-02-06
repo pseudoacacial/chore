@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useChoreStore } from "../hooks/use-chore-store";
+import { Pressable, View } from "react-native";
 
 type ChoreSelectorProps = {
   selectedChores: Set<string>;
@@ -13,28 +14,28 @@ const ChoreSelector = ({
   const chores = useChoreStore((state) => state.chores);
 
   return (
-    <div className="fixed left-0 top-0 h-full flex justify-center flex-col">
-      <div className="w-6 h-1/2 overflow-scroll bg-white">
-        <div className="relative flex flex-col bg-[tomato]">
+    <View className="fixed left-0 top-0 h-full flex justify-center flex-col">
+      <View className="w-6 h-1/2 overflow-scroll bg-white">
+        <View className="relative flex flex-col bg-[tomato]">
           {[...chores].map(([id, chore], index) => (
-            <li
+            <Pressable
               className="h-6 overflow-hidden"
               style={{
-                background: String(chore.color),
+                backgroundColor: String(chore.color),
                 opacity: selectedChores.has(id) ? 1 : 0.6,
               }}
-              onClick={() => {
+              onPress={() => {
                 setSelectedChores(
                   selectedChores.symmetricDifference(new Set([id])),
                 );
               }}
             >
               {id}
-            </li>
+            </Pressable>
           ))}
-        </div>
-      </div>
-    </div>
+        </View>
+      </View>
+    </View>
   );
 };
 
